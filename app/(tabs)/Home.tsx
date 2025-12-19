@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import React from "react";
+import Button from "../../components/Button";
 
 interface Task {
   task: string;
@@ -24,7 +25,7 @@ const ListDummy = [
   { task: "Task 14", room: "H0214", completed: true },
 ];
 
-const App = () => {
+const Home = () => {
   return (
     <View style={styles.container}>
       <FlatList
@@ -41,27 +42,46 @@ const App = () => {
           </Text>
         )}
       ></FlatList>
+      <Button
+        text="Go to Listmaker"
+        path="/(tabs)/Listmaker"
+        buttonStyle={styles.button}
+        buttonTextStyle={{ color: "black", fontSize: 18 }}
+      ></Button>
     </View>
   );
 };
 
-export default App;
+export default Home;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    borderColor: "black",
+    borderWidth: 1,
   },
 
   list: {
     flexGrow: 1,
     justifyContent: "center",
+    borderColor: "black",
+    borderWidth: 1,
   },
 
   weekText: {
     fontSize: 60,
     fontWeight: "bold",
     marginBottom: 20,
+  },
+
+  button: {
+    backgroundColor: "#E1F8D7",
+    paddingVertical: 15,
+    borderRadius: 8,
+    width: "90%",
+    alignItems: "center",
+    marginTop: 10,
   },
 });
