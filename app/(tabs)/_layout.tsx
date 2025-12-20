@@ -25,7 +25,7 @@ const _Layout = () => {
         }}
       >
         <Tabs.Screen
-          name="home"
+          name="index"
           options={{
             title: "Hjem",
             tabBarIcon: ({ color, size, focused }) => (
@@ -35,7 +35,7 @@ const _Layout = () => {
         />
 
         <Tabs.Screen
-          name="feed"
+          name="Listmaker"
           options={{
             title: "Feed",
             tabBarIcon: ({ color, size, focused }) => (
@@ -44,29 +44,7 @@ const _Layout = () => {
           }}
         />
 
-        <Tabs.Screen
-          name="newPlaces"
-          options={{
-            title: "Nytt sted",
-            tabBarIcon: ({ color, size, focused }) => (
-              <Feather name="plus-circle" size={size} color={color} />
-            ),
-          }}
-        />
-
-        <Tabs.Screen
-          name="map"
-          options={{
-            title: "Kart",
-            tabBarIcon: ({ color, size, focused }) => (
-              <Feather name="map" size={size} color={color} />
-            ),
-          }}
-        />
-
         <Tabs.Screen name="settings" options={{ href: null }} />
-        <Tabs.Screen name="profile" options={{ href: null }} />
-        <Tabs.Screen name="pearl" options={{ href: null }} />
       </Tabs>
     </SafeAreaView>
   );
