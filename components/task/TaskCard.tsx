@@ -10,7 +10,7 @@ interface TaskCardProps {
 
 const TaskCard = ({ room, task, completed }: TaskCardProps) => {
   return (
-    <View style={styles.card}>
+    <View style={completed ? styles.cardC : styles.cardNC}>
       <View style={styles.topRow}>
         <Text style={styles.textRoom}>{room}</Text>
         <Text style={styles.textCompleted}>
@@ -23,14 +23,24 @@ const TaskCard = ({ room, task, completed }: TaskCardProps) => {
 };
 
 const styles = StyleSheet.create({
-  card: {
+  cardNC: {
     width: "100%",
     marginTop: 16,
     padding: 12,
     borderRadius: 12,
     borderColor: "grey",
     borderWidth: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#dd2424a8",
+  },
+
+  cardC: {
+    width: "100%",
+    marginTop: 16,
+    padding: 12,
+    borderRadius: 12,
+    borderColor: "grey",
+    borderWidth: 1,
+    backgroundColor: "#24dd3dad",
   },
 
   topRow: {
@@ -42,6 +52,7 @@ const styles = StyleSheet.create({
   textRoom: {
     fontSize: 20,
     flex: 1,
+    fontWeight: "bold",
   },
 
   textCompleted: {},

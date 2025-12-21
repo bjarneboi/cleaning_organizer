@@ -47,21 +47,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     height: "100%",
-  },
-
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    width: "90%",
-    color: "#000",
-    borderColor: "grey",
-    borderRadius: 8,
+    marginBottom: 100,
   },
 
   flatList: {
-    marginVertical: 20,
     width: "90%",
   },
 
