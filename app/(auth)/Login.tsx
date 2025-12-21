@@ -11,7 +11,6 @@ import {
   TextInput,
 } from "react-native";
 import { auth, db } from "../../utils/FirebaseConfig";
-import { styles as globalStyles } from "../styles";
 
 export default function LoginScreen() {
   const userData = collection(db, "users");
@@ -74,7 +73,7 @@ export default function LoginScreen() {
       <Text style={styles.title}>Cleaning</Text>
 
       <TextInput
-        style={globalStyles.authInput}
+        style={styles.authInput}
         placeholder="Brukernavn"
         placeholderTextColor="#888888"
         value={username}
@@ -82,7 +81,7 @@ export default function LoginScreen() {
         autoCapitalize="none"
       />
       <TextInput
-        style={globalStyles.authInput}
+        style={styles.authInput}
         placeholder="Passord"
         placeholderTextColor="#888888"
         value={password}
@@ -91,14 +90,14 @@ export default function LoginScreen() {
       />
 
       <Pressable
-        style={globalStyles.authButton}
+        style={styles.authButton}
         onPress={signIn}
         disabled={isLoading}
       >
         {isLoading ? (
           <ActivityIndicator color="#fff" />
         ) : (
-          <Text style={globalStyles.authButtonText}>Logg inn</Text>
+          <Text style={styles.authButtonText}>Logg inn</Text>
         )}
       </Pressable>
 
@@ -128,5 +127,45 @@ const styles = StyleSheet.create({
   },
   linkText: {
     color: "#007AFF",
+  },
+
+  authContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+    backgroundColor: "#FFFFFF",
+  },
+  authTitle: {
+    fontSize: 32,
+    fontWeight: "bold",
+    marginBottom: 40,
+    color: "#333333",
+  },
+  authInput: {
+    width: "90%",
+    height: 50,
+    borderColor: "#DDDDDD",
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    marginBottom: 15,
+    backgroundColor: "#F9F9F9",
+  },
+  authButton: {
+    backgroundColor: "#E1F8D7",
+    paddingVertical: 15,
+    borderRadius: 8,
+    width: "90%",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  authButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#000000",
+  },
+  authLink: {
+    marginTop: 20,
   },
 });
