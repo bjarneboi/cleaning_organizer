@@ -10,7 +10,7 @@ import {
   Text,
   TextInput,
 } from "react-native";
-import { auth, db } from "@/utils/FirebaseConfig";
+import { auth, db } from "../../utils/FirebaseConfig";
 import { styles as globalStyles } from "../styles";
 
 export default function LoginScreen() {
@@ -70,8 +70,8 @@ export default function LoginScreen() {
   };
 
   return (
-    <KeyboardAvoidingView style={localStyles.container} behavior="padding">
-      <Text style={localStyles.title}>PerleSted</Text>
+    <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <Text style={styles.title}>Cleaning</Text>
 
       <TextInput
         style={globalStyles.authInput}
@@ -102,14 +102,14 @@ export default function LoginScreen() {
         )}
       </Pressable>
 
-      <Link href="/register" style={localStyles.link}>
-        <Text style={localStyles.linkText}>Ny bruker? Registrer deg</Text>
+      <Link href="/register" style={styles.link}>
+        <Text style={styles.linkText}>Ny bruker? Registrer deg</Text>
       </Link>
     </KeyboardAvoidingView>
   );
 }
 
-const localStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
