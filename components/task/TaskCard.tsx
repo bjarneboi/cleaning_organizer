@@ -27,9 +27,9 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 16,
     padding: 12,
-    borderRadius: 12,
-    borderColor: "grey",
-    borderWidth: 1,
+    borderRadius: 0,
+    borderColor: "#000000ff",
+    borderWidth: 2,
     backgroundColor: "#dd2424a8",
   },
 
@@ -37,9 +37,9 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 16,
     padding: 12,
-    borderRadius: 12,
-    borderColor: "grey",
-    borderWidth: 1,
+    borderRadius: 0,
+    borderColor: "#000000ff",
+    borderWidth: 2,
     backgroundColor: "#24dd3dad",
   },
 
@@ -55,7 +55,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-  textCompleted: {},
+  textCompleted: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
 
   textTask: {
     fontSize: 16,
