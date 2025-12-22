@@ -3,6 +3,7 @@ import { StyleSheet, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Task } from "../../types/task";
 import TaskCard from "./TaskCard";
+import { getCurrentWeekNumber } from "bb-ts-datetime";
 
 export default function TaskView({
   tasks,
@@ -12,6 +13,7 @@ export default function TaskView({
   useInsets?: boolean;
 }) {
   const insets = useSafeAreaInsets();
+  const currentWeekNumber = getCurrentWeekNumber();
 
   return (
     <View
@@ -32,6 +34,7 @@ export default function TaskView({
                 room={item.room}
                 task={item.task}
                 completed={item.completed}
+                week={currentWeekNumber}
               />
             </View>
           ))}
