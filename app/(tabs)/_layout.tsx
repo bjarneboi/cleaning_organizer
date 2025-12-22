@@ -1,9 +1,10 @@
 import { Feather } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import React from "react";
+import React, { use, useEffect } from "react";
 import { Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../../components/Header";
+import { getUserDataFromDatabase } from "../../services/userService";
 
 const _Layout = () => {
   return (

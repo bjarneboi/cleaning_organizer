@@ -18,5 +18,14 @@ export const updateUserDatabaseField = async (fieldName: string, value: string) 
     return true;
 };
 
+export const setUserCollective = async (collective: string, room: string) => {
+    const userID = auth.currentUser?.uid;
+    if (!userID) return false;
+
+    await updateDoc(doc(db, "users", userID), { collective, room });
+    return true;
+}
+
+
 
 

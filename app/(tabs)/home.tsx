@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import TaskView from "../../components/task/TaskView";
 import { Task } from "../../types/task";
 import { getCurrentWeekNumber } from "bb-ts-datetime";
+import { setUserCollective } from "../../services/userService";
 
 const Home = () => {
   const listDummy = [
@@ -31,6 +32,8 @@ const Home = () => {
   const [currentYear, setCurrentYear] = useState<number>(2024);
   const [day, setDay] = useState<number>(1);
   const [month, setMonth] = useState<number>(1);
+  const [collective, setCollective] = useState<string>("");
+  const [room, setRoom] = useState<string>("");
 
   useEffect(() => {
     const today = new Date();
@@ -38,6 +41,11 @@ const Home = () => {
     setDay(today.getDate());
     setMonth(today.getMonth() + 1);
     setCurrentYear(today.getFullYear());
+
+    setCollective("A2");
+    setRoom("H0201");
+
+    setUserCollective("A2", "H0201");
   }, []);
 
   return (
@@ -47,7 +55,7 @@ const Home = () => {
       showsVerticalScrollIndicator={false}
     >
       <Text style={styles.title}>
-        {day}.{month}.{currentYear} - Week: {week}
+        Collective: {collective} - Week: {week}
       </Text>
       <TaskView tasks={tasks} useInsets={false}></TaskView>
     </ScrollView>
