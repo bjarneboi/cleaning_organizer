@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TaskView from "../../components/task/TaskView";
 import { Task } from "../../types/task";
 
@@ -27,6 +27,34 @@ const Home = () => {
 
   const [tasks, setTasks] = useState<Task[]>(listDummy);
   const [week, setWeek] = useState<number>(1);
+  const [currentYear, setCurrentYear] = useState<number>(2024);
+  const [day, setDay] = useState<number>(1);
+  const [month, setMonth] = useState<number>(1);
+
+  const getCurrentWeek = () => {
+    const today = new Date();
+    const currentDayOfWeek = today.getDay();
+    const firstDay = new Date(today);
+    firstDay.setDate(today.getDate() - currentDayOfWeek);
+
+    const weekDates = [];
+
+    for (let i = 0; i < 7; i++) {
+      const day = new Date(firstDay);
+      day.setDate(firstDay.getDate() + i);
+      weekDates.push(day);
+    }
+
+    return weekDates;
+  };
+
+  useEffect(() => {
+    const today = new Date();
+
+    setDay(today.getDate());
+    setMonth(today.getMonth() + 1);
+    setCurrentYear(today.getFullYear());
+  }, []);
 
   return (
     <ScrollView
@@ -34,7 +62,9 @@ const Home = () => {
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
     >
-      <Text style={styles.title}>Week {week}</Text>
+      <Text style={styles.title}>
+        {day}.{month}.{currentYear} - Week: {week}
+      </Text>
       <TaskView tasks={tasks} useInsets={false}></TaskView>
     </ScrollView>
   );

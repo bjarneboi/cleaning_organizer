@@ -1,16 +1,38 @@
 import { router } from "expo-router";
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { getUserDataFromDatabase } from "../../services/userService";
+import { setTaskCompletedStatus } from "../../services/taskService";
 
 interface TaskCardProps {
   room: string;
   task: string;
   completed: boolean;
+  week: number;
 }
 
-const TaskCard = ({ room, task, completed }: TaskCardProps) => {
+const TaskCard = ({ room, task, completed, week }: TaskCardProps) => {
+  const useEffect = async () => {
+    const userData = getUserDataFromDatabase();
+  };
+
+  const onPress = () => {
+    if (!completed) {
+      setTaskCompletedStatus(week);
+    }
+  };
+
   return (
-    <View style={completed ? styles.cardC : styles.cardNC}>
+    <Pressable
+      style={completed ? styles.cardC : styles.cardNC}
+      onPress={onPress}
+    >
       <View style={styles.topRow}>
         <Text style={styles.textRoom}>{room}</Text>
         <Text style={styles.textCompleted}>
@@ -18,7 +40,7 @@ const TaskCard = ({ room, task, completed }: TaskCardProps) => {
         </Text>
       </View>
       <Text style={styles.textTask}>{task}</Text>
-    </View>
+    </Pressable>
   );
 };
 
