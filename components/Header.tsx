@@ -7,7 +7,7 @@ import { StatusBar } from "expo-status-bar";
 export default function Header() {
   return (
     <>
-      <StatusBar style="light" />
+      <StatusBar style="auto" />
       <View style={styles.container}>
         <Link href="../home" asChild>
           <Pressable>
