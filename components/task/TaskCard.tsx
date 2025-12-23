@@ -18,13 +18,22 @@ interface TaskCardProps {
 }
 
 const TaskCard = ({ room, task, completed, week }: TaskCardProps) => {
-  const useEffect = async () => {
-    const userData = getUserDataFromDatabase();
+  const [userData, setUserData] = React.useState<any>(null);
+
+  const fetchUserData = async () => {
+    const userData = await getUserDataFromDatabase();
+
+    if (!userData) return;
+
+    setUserData(userData);
   };
+  fetchUserData();
 
   const onPress = () => {
     if (!completed) {
-      setTaskCompletedStatus(week);
+      setTaskCompletedStatus(week, userData.room, true);
+    } else {
+      setTaskCompletedStatus(week, userData.room, false);
     }
   };
 

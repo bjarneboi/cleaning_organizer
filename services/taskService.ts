@@ -1,7 +1,7 @@
 import { auth, db } from "../utils/FirebaseConfig";
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
-export const setTaskCompletedStatus = async (week: number) => {
+export const setTaskCompletedStatus = async (week: number, room: string, completed: boolean) => {
     const userID = auth.currentUser?.uid;
     if (!userID) return false;
 
@@ -10,10 +10,9 @@ export const setTaskCompletedStatus = async (week: number) => {
     if (!userData) return false;
 
     const collective = userData.collective;
-    const room = userData.room;
 
     await updateDoc(doc(db, "collectives", collective, "weeks", week.toString(), "tasks", room), {
-        completed: true,
+        completed: completed,
     });
 
     return true;
