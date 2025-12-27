@@ -1,5 +1,5 @@
 import { auth, db } from "../utils/FirebaseConfig";
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
 import { numberOfWeeksInYear } from "bb-ts-datetime";
 import { getRoomsInCollective } from "./generalService";
 
@@ -77,4 +77,16 @@ export const setTasksForCollective = async (tasks: String[], year: number) => {
         }
 
     }
-}
+};
+
+export const getTasksForCollectiveWeek = async ( collective: string, week: number) => {
+  const snap = await getDocs(
+    collection(db, "collectives", collective, "weeks", week.toString(), "tasks")
+  );
+
+  return snap.docs.map((d) => ({
+    room: d.id,
+    task: d.data()?.task ?? "",
+    completed: !!d.data()?.completed,
+  }));
+};

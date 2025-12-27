@@ -1,4 +1,4 @@
-import { auth } from "../../utils/FirebaseConfig";
+import { app, auth } from "../../utils/FirebaseConfig";
 import { Image } from "expo-image";
 import { useFocusEffect } from "expo-router";
 import React, { useCallback, useState } from "react";
@@ -8,15 +8,25 @@ import {
   Text,
   View,
   ActivityIndicator,
+  Modal,
+  TextInput,
+  Pressable,
 } from "react-native";
 import Button from "../../components/Button";
 import { ProfileSettingCard } from "../../components/profile/ProfileSettingCard";
-import { getUserDataFromDatabase } from "../../services/userService";
 import {
+  getUserDataFromDatabase,
+  sendJoinRequest,
+} from "../../services/userService";
+import {
+  approveJoinRequest,
   fillCollectiveWithRooms,
   getAllCollectives,
+  getRoomsInCollective,
+  isRoomAvailable,
 } from "../../services/generalService";
 import CollectiveView from "../../components/collective/CollectiveView";
+import { signOut } from "@firebase/auth";
 
 const dummyProfileData = {
   imageUrl:
@@ -33,6 +43,81 @@ const dummyProfileData = {
 const Unhoused = () => {
   const [userData, setUserData] = useState<any>(undefined);
   const [loading, setLoading] = useState(true);
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedCollective, setSelectedCollective] = useState<string | null>(
+    null
+  );
+  const [roomText, setRoomText] = useState("");
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      alert("Logged out successfully");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const openJoin = (name: string) => {
+    setSelectedCollective(name);
+    setRoomText("");
+    setModalOpen(true);
+  };
+
+  const closeJoin = () => setModalOpen(false);
+
+  const handleJoin = async () => {
+    if (!selectedCollective) return;
+
+    const collectiveRooms = await getRoomsInCollective(selectedCollective);
+
+    if (!collectiveRooms) {
+      alert(
+        "Collective " +
+          selectedCollective +
+          " does not exist. Did you misspell it?"
+      );
+      return;
+    }
+
+    if (!collectiveRooms.includes(roomText)) {
+      alert(
+        "Room " +
+          roomText +
+          " does not exist in " +
+          selectedCollective +
+          ". Did you misspell it?"
+      );
+      return;
+    }
+
+    const available = await isRoomAvailable(selectedCollective, roomText);
+
+    if (!available) {
+      alert(
+        "Room " +
+          roomText +
+          " in " +
+          selectedCollective +
+          " is already occupied. Please contact an admin if you think this is a mistake."
+      );
+      return;
+    }
+
+    await sendJoinRequest(selectedCollective, roomText);
+
+    alert(
+      "Success! Join request sent for room " +
+        roomText +
+        " in " +
+        selectedCollective
+    );
+  };
+
+  const approveMe = async () => {
+    await approveJoinRequest("A2", "6Ty8gfJLIAbnxeo3ypuv");
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -126,8 +211,44 @@ const Unhoused = () => {
           buttonTextStyle={styles.formButtonText}
         />
         */}
+        <Button
+          text="Approve me (TESTING ONLY)"
+          onPress={approveMe}
+          buttonStyle={styles.formButton}
+          buttonTextStyle={styles.formButtonText}
+        />
+        <Button
+          text="Log out"
+          onPress={handleLogout}
+          buttonStyle={styles.formButton}
+          buttonTextStyle={styles.formButtonText}
+        />
 
-        <CollectiveView />
+        <CollectiveView onSelect={openJoin} />
+        <Modal visible={modalOpen} transparent animationType="fade">
+          <View style={styles.modalContainer}>
+            <View style={styles.modalInnerContainer}>
+              <Text style={styles.modalRoomText}>
+                Which room is yours in {selectedCollective}?
+              </Text>
+
+              <TextInput
+                value={roomText}
+                onChangeText={setRoomText}
+                placeholder="Room number, e.g., H0201"
+                style={styles.modalInput}
+              />
+              <View style={styles.modalButtonContainer}>
+                <Pressable onPress={closeJoin} style={styles.modalButton}>
+                  <Text style={styles.modalButtonText}>Lukk</Text>
+                </Pressable>
+                <Pressable onPress={handleJoin} style={styles.modalButton}>
+                  <Text style={styles.modalButtonText}>Apply to join</Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     </ScrollView>
   );
@@ -139,6 +260,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     width: "90%",
     alignSelf: "center",
+    marginVertical: 100,
   },
   headerContainer: {
     alignItems: "center",
@@ -196,6 +318,50 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: "#000000",
+  },
+
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "rgba(0,0,0,0.4)",
+    padding: 20,
+  },
+
+  modalInnerContainer: {
+    backgroundColor: "#ffffffff",
+    padding: 16,
+    borderRadius: 12,
+  },
+
+  modalRoomText: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+
+  modalInput: {
+    borderWidth: 1,
+    borderColor: "#d3cacaff",
+    padding: 20,
+    borderRadius: 8,
+    marginTop: 12,
+  },
+
+  modalButtonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
+  },
+
+  modalButton: {
+    paddingHorizontal: 40,
+    paddingVertical: 20,
+    borderRadius: 8,
+    backgroundColor: "#070007ff",
+  },
+
+  modalButtonText: {
+    color: "#ffffffff",
+    fontWeight: "bold",
   },
 });
 export default Unhoused;

@@ -7,9 +7,11 @@ import { getCurrentWeekNumber } from "bb-ts-datetime";
 
 export default function TaskView({
   tasks,
+  onRefresh,
   useInsets = true,
 }: {
   tasks: Task[];
+  onRefresh: () => void;
   useInsets?: boolean;
 }) {
   const insets = useSafeAreaInsets();
@@ -35,6 +37,7 @@ export default function TaskView({
                 task={item.task}
                 completed={item.completed}
                 week={currentWeekNumber}
+                onRefresh={onRefresh}
               />
             </View>
           ))}

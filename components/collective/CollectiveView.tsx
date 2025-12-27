@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CollectiveCard from "./CollectiveCard";
@@ -7,20 +7,24 @@ import { getAllCollectives } from "../../services/generalService";
 
 export default function CollectiveView({
   useInsets = true,
+  onSelect,
 }: {
   useInsets?: boolean;
+  onSelect: (name: string) => void;
 }) {
   const insets = useSafeAreaInsets();
   const currentWeekNumber = getCurrentWeekNumber();
 
   const [collectives, setCollectives] = useState<string[]>([]);
 
-  const fetchCollectives = async () => {
-    const fetchedCollectives = await getAllCollectives();
-    setCollectives(fetchedCollectives);
-  };
+  useEffect(() => {
+    const fetchCollectives = async () => {
+      const fetchedCollectives = await getAllCollectives();
+      setCollectives(fetchedCollectives);
+    };
 
-  fetchCollectives();
+    fetchCollectives();
+  }, []);
 
   return (
     <View
@@ -37,7 +41,11 @@ export default function CollectiveView({
         <View style={styles.nestedView}>
           {collectives.map((item) => (
             <View key={item}>
-              <CollectiveCard name={item} />
+              <CollectiveCard
+                name={item}
+                key={item}
+                onPress={() => onSelect(item)}
+              />
             </View>
           ))}
         </View>

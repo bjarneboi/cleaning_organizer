@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Pressable,
   StyleSheet,
@@ -15,25 +15,43 @@ interface TaskCardProps {
   task: string;
   completed: boolean;
   week: number;
+  onRefresh: () => void;
 }
 
-const TaskCard = ({ room, task, completed, week }: TaskCardProps) => {
+const TaskCard = ({
+  room,
+  task,
+  completed,
+  week,
+  onRefresh,
+}: TaskCardProps) => {
   const [userData, setUserData] = React.useState<any>(null);
 
-  const fetchUserData = async () => {
-    const userData = await getUserDataFromDatabase();
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userData = await getUserDataFromDatabase();
 
-    if (!userData) return;
+      if (!userData) return;
 
-    setUserData(userData);
-  };
-  fetchUserData();
+      setUserData(userData);
+    };
+    fetchUserData();
+  }, []);
 
-  const onPress = () => {
+  const onPress = async () => {
+    if (userData.room !== room) {
+      alert("You can only update tasks for your own room.");
+      return;
+    }
+
     if (!completed) {
-      setTaskCompletedStatus(week, userData.room, true);
+      await setTaskCompletedStatus(week, room, true);
+      alert("Task marked as completed!");
+      onRefresh();
     } else {
-      setTaskCompletedStatus(week, userData.room, false);
+      await setTaskCompletedStatus(week, room, false);
+      alert("Task marked as not completed!");
+      onRefresh();
     }
   };
 

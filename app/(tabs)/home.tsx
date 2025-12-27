@@ -1,9 +1,22 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import TaskView from "../../components/task/TaskView";
 import { Task } from "../../types/task";
 import { getCurrentWeekNumber } from "bb-ts-datetime";
-import { setUserCollective } from "../../services/userService";
+import {
+  getUserDataFromDatabase,
+  setUserCollective,
+} from "../../services/userService";
+import {
+  getTasksForCollectiveWeek,
+  setTasksForCollective,
+} from "../../services/taskService";
 
 const Home = () => {
   const listDummy = [
@@ -28,39 +41,63 @@ const Home = () => {
   ];
 
   const [userData, setUserData] = useState<any>(null);
-  const [tasks, setTasks] = useState<Task[]>(listDummy);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [week, setWeek] = useState<number>(getCurrentWeekNumber());
   const [currentYear, setCurrentYear] = useState<number>(2024);
   const [day, setDay] = useState<number>(1);
   const [month, setMonth] = useState<number>(1);
   const [collective, setCollective] = useState<string>("");
   const [room, setRoom] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const refreshTasks = async (collective: string, week: number) => {
+    const tasksForWeek = await getTasksForCollectiveWeek(collective, week);
+    setTasks(tasksForWeek ?? []);
+  };
 
   useEffect(() => {
-    const today = new Date();
+    const run = async () => {
+      setIsLoading(true);
+      try {
+        const uD = await getUserDataFromDatabase();
+        if (!uD?.collective || !uD?.room) return;
 
-    setDay(today.getDate());
-    setMonth(today.getMonth() + 1);
-    setCurrentYear(today.getFullYear());
+        setUserData(uD);
+        setCollective(uD.collective);
+        setRoom(uD.room);
 
-    setCollective("A2");
-    setRoom("H0201");
+        await refreshTasks(uD.collective, week);
+      } finally {
+        setIsLoading(false);
+      }
 
-    setUserCollective("A2", "H0201");
+      /*
+      await setTasksForCollective(
+        [
+          "Common area (TV room, accessories, bar table & dinner table)",
+          "Ovenplate, Norwegian pant & filter",
+          "Wash floor",
+          "Vacuum floor",
+          "Kitchen table, dishwasher & sink",
+          "Inside oven and microwave",
+          "Trash & cabinets",
+        ],
+        currentYear
+      );
+      */
+    };
 
-    /*
-    const uD = getUserDataFromDatabase();
-
-    if (!uD) return;
-
-    setUserData(uD);
-
-    if (!userData || !userData.collective || !userData.room) return;{
-
-    setCollective(userData.collective || null);
-    setRoom(userData.room || null);
-    */
+    run();
   }, []);
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+        <Text>Loading profile...</Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView
@@ -71,7 +108,11 @@ const Home = () => {
       <Text style={styles.title}>
         Collective: {collective} - Week: {week}
       </Text>
-      <TaskView tasks={tasks} useInsets={false}></TaskView>
+      <TaskView
+        tasks={tasks}
+        onRefresh={() => refreshTasks(collective, week)}
+        useInsets={false}
+      ></TaskView>
     </ScrollView>
   );
 };

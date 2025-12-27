@@ -15,7 +15,13 @@ import {
   getRoomsInCollectiveWithData,
 } from "../../services/generalService";
 
-const CollectiveCard = ({ name }: { name: string }) => {
+const CollectiveCard = ({
+  name,
+  onPress,
+}: {
+  name: string;
+  onPress: () => void;
+}) => {
   const [roomsTotal, setRoomsTotal] = React.useState<number>(0);
   const [occupiedRooms, setOccupiedRooms] = React.useState<number>(0);
 
@@ -30,14 +36,15 @@ const CollectiveCard = ({ name }: { name: string }) => {
 
     fetchCollectiveData();
   }, [name]);
-  const onPress = () => {};
+
 
   return (
     <Pressable style={styles.card} onPress={onPress}>
-      <Text style={styles.textName}>{name}</Text>
-      <Text
-        style={styles.textName}
-      >{`Space: ${occupiedRooms} / ${roomsTotal}`}</Text>
+      <View style={styles.topRow}>
+        <Text style={styles.text}>{name}</Text>
+        <Text style={styles.text}>{`${occupiedRooms} / ${roomsTotal}`}</Text>
+      </View>
+      <Text style={styles.textJoin}>Click to join</Text>
     </Pressable>
   );
 };
@@ -46,23 +53,31 @@ const styles = StyleSheet.create({
   card: {
     width: "100%",
     marginTop: 16,
-    padding: 12,
+    padding: 20,
     borderRadius: 0,
     borderColor: "#000000ff",
     borderWidth: 2,
-    backgroundColor: "#dd2424a8",
+    backgroundColor: "#ce24dda8",
   },
 
   topRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
+    justifyContent: "space-between",
   },
 
-  textName: {
-    fontSize: 20,
-    flex: 1,
+  text: {
+    fontSize: 28,
     fontWeight: "bold",
+    marginHorizontal: 15,
+  },
+
+  textJoin: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginHorizontal: 15,
+    textAlign: "center",
+    marginTop: 10,
   },
 });
 

@@ -26,20 +26,24 @@ export default function RegisterScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [realname, setRealname] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const usernameRef = useRef(null);
   const emailRef = useRef(null);
+  const realnameRef = useRef(null);
 
   const addUserFirestore = async (
     uid: string,
     username: string,
-    email: string
+    email: string,
+    realname: string
   ) => {
     await setDoc(doc(db, "users", uid), {
       username: username,
       email: email,
+      realname: realname,
       createdAt: new Date(),
     });
   };
@@ -59,18 +63,18 @@ export default function RegisterScreen() {
   const handleRegister = async () => {
     if (isLoading) return;
     if (password !== confirmPassword) {
-      alert("Passordene er ikke like.");
+      alert("Passwords do not match.");
       return;
     }
 
     setIsLoading(true);
     try {
       if (!(await checkUsernameAvailability(username))) {
-        alert("Brukernavnet er allerede tatt.");
+        alert("Username is already taken.");
         return;
       }
       if (!(await checkEmailAvailability(email))) {
-        alert("Denne e-posten er allerede registrert.");
+        alert("This email is already registered.");
         return;
       }
 
@@ -80,12 +84,12 @@ export default function RegisterScreen() {
         password
       );
       if (userTemp.user) {
-        await addUserFirestore(userTemp.user.uid, username, email);
-        router.replace("/(tabs)/home");
+        await addUserFirestore(userTemp.user.uid, username, email, realname);
+        alert("Registration successful! You can now log in.");
       }
     } catch (error: any) {
       console.log(error);
-      alert("Registrering feilet: " + error.message);
+      alert("Registration failed: " + error.message);
     } finally {
       setIsLoading(false);
     }
@@ -93,12 +97,12 @@ export default function RegisterScreen() {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <Text style={styles.title}>Registrer ny bruker</Text>
+      <Text style={styles.title}>Register new user</Text>
 
       <TextInput
         ref={emailRef}
         style={styles.authInput}
-        placeholder="Epost-adresse"
+        placeholder="Email"
         placeholderTextColor="#888888"
         value={email}
         onChangeText={setEmail}
@@ -108,7 +112,7 @@ export default function RegisterScreen() {
       <TextInput
         ref={usernameRef}
         style={styles.authInput}
-        placeholder="Brukernavn"
+        placeholder="Username"
         placeholderTextColor="#888888"
         value={username}
         onChangeText={setUsername}
@@ -116,7 +120,7 @@ export default function RegisterScreen() {
       />
       <TextInput
         style={styles.authInput}
-        placeholder="Passord"
+        placeholder="Password"
         placeholderTextColor="#888888"
         value={password}
         onChangeText={setPassword}
@@ -124,11 +128,20 @@ export default function RegisterScreen() {
       />
       <TextInput
         style={styles.authInput}
-        placeholder="Skriv inn passord på nytt"
+        placeholder="Confirm Password"
         placeholderTextColor="#888888"
         value={confirmPassword}
         onChangeText={setConfirmPassword}
         secureTextEntry
+      />
+      <TextInput
+        ref={realnameRef}
+        style={styles.authInput}
+        placeholder="Real Name"
+        placeholderTextColor="#888888"
+        value={realname}
+        onChangeText={setRealname}
+        autoCapitalize="none"
       />
 
       <Pressable
@@ -139,12 +152,12 @@ export default function RegisterScreen() {
         {isLoading ? (
           <ActivityIndicator color="#FFFFFF" />
         ) : (
-          <Text style={styles.authButtonText}>Registrer</Text>
+          <Text style={styles.authButtonText}>Register</Text>
         )}
       </Pressable>
 
       <Link href="/login" style={styles.link}>
-        <Text style={styles.linkText}>Tilbake til login</Text>
+        <Text style={styles.linkText}>Back to login</Text>
       </Link>
     </KeyboardAvoidingView>
   );

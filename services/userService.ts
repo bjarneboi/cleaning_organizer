@@ -1,5 +1,5 @@
 import { auth, db } from "../utils/FirebaseConfig";
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
 
 
 export const getUserDataFromDatabase = async () => {
@@ -60,4 +60,25 @@ export const moveOutOfCollective = async () => {
 
     return true
 }
+
+export const sendJoinRequest = async (collective: string, room: string) => {
+  const userId = auth.currentUser?.uid;
+  if (!userId) throw new Error("User not authenticated");
+
+  const userData = await getUserDataFromDatabase();
+  if (!userData) throw new Error("Missing user data");
+
+  const username = userData.username;
+  const realname = userData.realname;
+  if (!username || !realname) throw new Error("Missing username/real name");
+
+  await addDoc(collection(db, "collectives", collective, "joinRequests"), {
+    userId,
+    username,
+    realname,
+    room,
+    createdAt: serverTimestamp(),
+    status: "pending",
+  });
+};
 
