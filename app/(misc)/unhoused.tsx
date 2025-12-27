@@ -12,7 +12,6 @@ import {
 import Button from "../../components/Button";
 import { ProfileSettingCard } from "../../components/profile/ProfileSettingCard";
 import { getUserDataFromDatabase } from "../../services/userService";
-import { signOut } from "@firebase/auth";
 
 const dummyProfileData = {
   imageUrl:
@@ -26,17 +25,9 @@ const dummyProfileData = {
   room: "NOT SET",
 };
 
-const Profile = () => {
+const Unhoused = () => {
   const [userData, setUserData] = useState<any>(undefined);
   const [loading, setLoading] = useState(true);
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   useFocusEffect(
     useCallback(() => {
@@ -97,12 +88,6 @@ const Profile = () => {
         <Button
           text="Change settings"
           path="./settings"
-          buttonStyle={styles.formButton}
-          buttonTextStyle={styles.formButtonText}
-        />
-        <Button
-          text="Log out"
-          onPress={handleLogout}
           buttonStyle={styles.formButton}
           buttonTextStyle={styles.formButtonText}
         />
@@ -176,4 +161,4 @@ const styles = StyleSheet.create({
     color: "#000000",
   },
 });
-export default Profile;
+export default Unhoused;

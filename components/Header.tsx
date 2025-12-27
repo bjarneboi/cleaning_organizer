@@ -24,8 +24,8 @@ export default function Header() {
       <View style={styles.container}>
         <Text style={styles.title}>{userData?.username}</Text>
         <Text style={styles.title}>
-          {userData?.collective ? userData.collective : "No collective set"}-
-          {userData?.room ? userData.room : "No room set"}
+          {userData?.collective ? userData.collective + " - " : "Not housed"}
+          {userData?.room ? userData.room : ""}
         </Text>
       </View>
     </>

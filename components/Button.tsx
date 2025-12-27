@@ -5,9 +5,10 @@ import React from "react";
 
 interface ButtonProps {
   text: string;
-  path: Parameters<typeof router.push>[0];
+  path?: Parameters<typeof router.push>[0];
   buttonStyle: StyleProp<ViewStyle>;
   buttonTextStyle: StyleProp<TextStyle>;
+  onPress?: () => void;
 }
 
 export default function Button({
@@ -15,9 +16,16 @@ export default function Button({
   text,
   buttonStyle,
   buttonTextStyle,
+  onPress,
 }: ButtonProps) {
   const handlePress = () => {
-    router.push(path);
+    if (path) {
+      router.push(path);
+    }
+
+    if (onPress) {
+      onPress();
+    }
   };
 
   return (

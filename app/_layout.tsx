@@ -3,6 +3,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, View, StyleSheet } from "react-native";
 import { auth } from "../utils/FirebaseConfig";
+import { getUserDataFromDatabase } from "../services/userService";
 
 export default function RootLayout() {
   const [initializing, setInitializing] = useState(true);
@@ -10,14 +11,27 @@ export default function RootLayout() {
   const segments = useSegments();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       const inTabsGroup = segments[0] === "(tabs)";
       const inAuthGroup = segments[0] === "(auth)";
+      const inMiscGroup = segments[0] === "(misc)";
 
-      if (user && !inTabsGroup) {
-        router.replace("/(tabs)/home");
-      } else if (!user && !inAuthGroup) {
-        router.replace("/(auth)/login");
+      if (!user) {
+        if (!inAuthGroup) {
+          router.replace("/(auth)/login");
+        }
+      } else {
+        const data = await getUserDataFromDatabase();
+
+        if (!data?.collective || !data?.room) {
+          if (!inMiscGroup) {
+            router.replace("/(misc)/unhoused");
+          }
+        } else {
+          if (!inTabsGroup) {
+            router.replace("/(tabs)/home");
+          }
+        }
       }
 
       if (initializing) setInitializing(false);

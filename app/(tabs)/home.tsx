@@ -27,6 +27,7 @@ const Home = () => {
     { task: "Task 14", room: "H0214", completed: true },
   ];
 
+  const [userData, setUserData] = useState<any>(null);
   const [tasks, setTasks] = useState<Task[]>(listDummy);
   const [week, setWeek] = useState<number>(getCurrentWeekNumber());
   const [currentYear, setCurrentYear] = useState<number>(2024);
@@ -46,6 +47,19 @@ const Home = () => {
     setRoom("H0201");
 
     setUserCollective("A2", "H0201");
+
+    /*
+    const uD = getUserDataFromDatabase();
+
+    if (!uD) return;
+
+    setUserData(uD);
+
+    if (!userData || !userData.collective || !userData.room) return;{
+
+    setCollective(userData.collective || null);
+    setRoom(userData.room || null);
+    */
   }, []);
 
   return (

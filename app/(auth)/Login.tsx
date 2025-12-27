@@ -11,6 +11,7 @@ import {
   TextInput,
 } from "react-native";
 import { auth, db } from "../../utils/FirebaseConfig";
+import { getUserDataFromDatabase } from "../../services/userService";
 
 export default function LoginScreen() {
   const userData = collection(db, "users");
@@ -58,7 +59,17 @@ export default function LoginScreen() {
 
       const user = await signInWithEmailAndPassword(auth, loginName, password);
       if (user.user) {
-        router.replace("/(tabs)/home");
+        const thisUser = await getUserDataFromDatabase();
+
+        if (!thisUser) {
+          throw new Error("Userdata ERROR");
+        }
+
+        if (!thisUser.collective || !thisUser.room) {
+          router.replace("/(misc)/unhoused");
+        } else {
+          router.replace("/(tabs)/home");
+        }
       }
     } catch (error: any) {
       console.log(error);
