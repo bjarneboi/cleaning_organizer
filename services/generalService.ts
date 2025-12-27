@@ -14,12 +14,24 @@ export const getCollectiveDataFromDatabase = async (collective: string) => {
     return collectiveSnap.data();
 }
 
+export const getRoomsInCollectiveWithData = async (collective: string) => {
+    const roomsSnap = await getDocs(collection(db, "collectives", collective, "rooms"));
+    const occupied = roomsSnap.docs.filter((d) => d.data()?.occupied).length;
+
+    return {
+        total: roomsSnap.size,
+        occupied,
+    };
+}
+
 export const fillCollectiveWithRooms = async (collective: string, rooms: string[]) => {
     const collectiveRef = doc(db, "collectives", collective);
     
     await setDoc(
         doc(db, "collectives", collective), 
-        {},
+        {
+            roomsTotal: rooms.length,
+        },
         { merge: true },
     )
 
@@ -34,4 +46,9 @@ export const fillCollectiveWithRooms = async (collective: string, rooms: string[
             { merge: true }
         );
     }
+}
+
+export const getAllCollectives = async (): Promise<string[]> => {
+    const snap = await getDocs(collection(db, "collectives"));
+    return snap.docs.map(doc => doc.id);
 }

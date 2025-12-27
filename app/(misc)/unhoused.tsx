@@ -12,6 +12,11 @@ import {
 import Button from "../../components/Button";
 import { ProfileSettingCard } from "../../components/profile/ProfileSettingCard";
 import { getUserDataFromDatabase } from "../../services/userService";
+import {
+  fillCollectiveWithRooms,
+  getAllCollectives,
+} from "../../services/generalService";
+import CollectiveView from "../../components/collective/CollectiveView";
 
 const dummyProfileData = {
   imageUrl:
@@ -65,6 +70,28 @@ const Unhoused = () => {
     );
   }
 
+  /*
+  const onFillA2Press = async () => {
+    const atwo = [
+      "H0201",
+      "H0202",
+      "H0203",
+      "H0204",
+      "H0205",
+      "H0206",
+      "H0207",
+      "H0208",
+      "H0209",
+      "H0210",
+      "H0211",
+      "H0212",
+      "H0213",
+      "H0214",
+    ];
+    await fillCollectiveWithRooms("A2", atwo);
+  };
+  */
+
   return (
     <ScrollView
       style={styles.container}
@@ -91,6 +118,16 @@ const Unhoused = () => {
           buttonStyle={styles.formButton}
           buttonTextStyle={styles.formButtonText}
         />
+        {/* 
+        <Button
+          text="FILL A2"
+          onPress={onFillA2Press}
+          buttonStyle={styles.formButton}
+          buttonTextStyle={styles.formButtonText}
+        />
+        */}
+
+        <CollectiveView />
       </View>
     </ScrollView>
   );
