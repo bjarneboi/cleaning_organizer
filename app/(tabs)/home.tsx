@@ -8,7 +8,7 @@ import {
 import React, { useEffect, useState } from "react";
 import TaskView from "../../components/task/TaskView";
 import { Task } from "../../types/task";
-import { getCurrentWeekNumber } from "bb-ts-datetime";
+import { getCurrentWeekNumber, getCurrentYearString } from "bb-ts-datetime";
 import {
   getUserDataFromDatabase,
   setUserCollective,
@@ -43,7 +43,9 @@ const Home = () => {
   const [userData, setUserData] = useState<any>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [week, setWeek] = useState<number>(getCurrentWeekNumber());
-  const [currentYear, setCurrentYear] = useState<number>(2024);
+  const [currentYear, setCurrentYear] = useState<number>(
+    new Date().getFullYear()
+  );
   const [day, setDay] = useState<number>(1);
   const [month, setMonth] = useState<number>(1);
   const [collective, setCollective] = useState<string>("");
@@ -51,7 +53,11 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const refreshTasks = async (collective: string, week: number) => {
-    const tasksForWeek = await getTasksForCollectiveWeek(collective, week);
+    const tasksForWeek = await getTasksForCollectiveWeek(
+      collective,
+      week,
+      currentYear
+    );
     setTasks(tasksForWeek ?? []);
   };
 
@@ -70,7 +76,6 @@ const Home = () => {
       } finally {
         setIsLoading(false);
       }
-
       /*
       await setTasksForCollective(
         [
@@ -82,7 +87,7 @@ const Home = () => {
           "Inside oven and microwave",
           "Trash & cabinets",
         ],
-        currentYear
+        currentYear + 1
       );
       */
     };
@@ -106,7 +111,7 @@ const Home = () => {
       showsVerticalScrollIndicator={false}
     >
       <Text style={styles.title}>
-        Collective: {collective} - Week: {week}
+        Collective: {collective} - Week: {week} - {currentYear}
       </Text>
       <TaskView
         tasks={tasks}

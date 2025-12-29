@@ -26,6 +26,9 @@ const TaskCard = ({
   onRefresh,
 }: TaskCardProps) => {
   const [userData, setUserData] = React.useState<any>(null);
+  const [currentYear, setCurrentYear] = React.useState<number>(
+    new Date().getFullYear()
+  );
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -45,11 +48,11 @@ const TaskCard = ({
     }
 
     if (!completed) {
-      await setTaskCompletedStatus(week, room, true);
+      await setTaskCompletedStatus(week, room, true, currentYear);
       alert("Task marked as completed!");
       onRefresh();
     } else {
-      await setTaskCompletedStatus(week, room, false);
+      await setTaskCompletedStatus(week, room, false, currentYear);
       alert("Task marked as not completed!");
       onRefresh();
     }

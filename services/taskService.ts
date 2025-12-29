@@ -3,7 +3,7 @@ import { collection, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/fi
 import { numberOfWeeksInYear } from "bb-ts-datetime";
 import { getRoomsInCollective } from "./generalService";
 
-export const setTaskCompletedStatus = async (week: number, room: string, completed: boolean) => {
+export const setTaskCompletedStatus = async (week: number, room: string, completed: boolean, year: number) => {
     const userID = auth.currentUser?.uid;
     if (!userID) return false;
 
@@ -13,7 +13,7 @@ export const setTaskCompletedStatus = async (week: number, room: string, complet
 
     const collective = userData.collective;
 
-    await updateDoc(doc(db, "collectives", collective, "weeks", week.toString(), "tasks", room), {
+    await updateDoc(doc(db, "collectives", collective, "years", year.toString(), "weeks", week.toString(), "tasks", room), {
         completed: completed,
     });
 
@@ -48,7 +48,7 @@ export const setTasksForCollective = async (tasks: String[], year: number) => {
     while (week <= numOfWeeks) {
         for (let i = 0; i < sideOne.length; i++) {
             await setDoc(
-                doc(db, "collectives", collective, "weeks", week.toString(), "tasks", sideOne[i]),
+                doc(db, "collectives", collective, "years", year.toString(), "weeks", week.toString(), "tasks", sideOne[i]),
                 {
                 task: allTasks[i],
                 completed: false,
@@ -56,7 +56,7 @@ export const setTasksForCollective = async (tasks: String[], year: number) => {
                 { merge: true }
             );
             await setDoc(
-                doc(db, "collectives", collective, "weeks", week.toString(), "tasks", sideTwo[i]),
+                doc(db, "collectives", collective, "years", year.toString(), "weeks", week.toString(), "tasks", sideTwo[i]),
                 {
                 task: allTasks[i],
                 completed: false,
@@ -79,9 +79,9 @@ export const setTasksForCollective = async (tasks: String[], year: number) => {
     }
 };
 
-export const getTasksForCollectiveWeek = async ( collective: string, week: number) => {
+export const getTasksForCollectiveWeek = async ( collective: string, week: number, year: number) => {
   const snap = await getDocs(
-    collection(db, "collectives", collective, "weeks", week.toString(), "tasks")
+    collection(db, "collectives", collective, "years", year.toString(), "weeks", week.toString(), "tasks")
   );
 
   return snap.docs.map((d) => ({
