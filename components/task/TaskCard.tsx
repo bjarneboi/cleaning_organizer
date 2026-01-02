@@ -81,8 +81,8 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 0,
     borderColor: "#000000ff",
-    borderWidth: 2,
-    backgroundColor: "#dd2424a8",
+    borderWidth: 4,
+    backgroundColor: "#c72929d3",
   },
 
   cardC: {
@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 0,
     borderColor: "#000000ff",
-    borderWidth: 2,
-    backgroundColor: "#24dd3dad",
+    borderWidth: 4,
+    backgroundColor: "#39c24bff",
   },
 
   topRow: {

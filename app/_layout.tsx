@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ActivityIndicator, View, StyleSheet } from "react-native";
 import { auth } from "../utils/FirebaseConfig";
 import { getUserDataFromDatabase } from "../services/userService";
+import { BACKGROUND_COLOR } from "../constants/colors";
 
 export default function RootLayout() {
   const [initializing, setInitializing] = useState(true);
@@ -46,7 +47,11 @@ export default function RootLayout() {
       justifyContent: "center",
       alignItems: "center",
       padding: 20,
-      backgroundColor: "#FFFFFF",
+      backgroundColor: BACKGROUND_COLOR,
+    },
+
+    root: {
+      flex: 1,
     },
   });
 
@@ -58,5 +63,9 @@ export default function RootLayout() {
     );
   }
 
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <View style={styles.root}>
+      <Stack screenOptions={{ headerShown: false }} />
+    </View>
+  );
 }

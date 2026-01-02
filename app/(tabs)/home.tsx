@@ -17,6 +17,7 @@ import {
   getTasksForCollectiveWeek,
   setTasksForCollective,
 } from "../../services/taskService";
+import { BACKGROUND_COLOR } from "../../constants/colors";
 
 const Home = () => {
   const listDummy = [
@@ -107,6 +108,10 @@ const Home = () => {
   return (
     <ScrollView
       style={styles.container}
+      contentContainerStyle={{
+        backgroundColor: "transparent",
+        paddingBottom: 20,
+      }}
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
     >
@@ -128,7 +133,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     gap: 1,
-    backgroundColor: "#ffffffce",
+    backgroundColor: BACKGROUND_COLOR,
   },
 
   title: {
