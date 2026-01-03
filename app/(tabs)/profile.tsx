@@ -152,19 +152,6 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingBottom: 20,
   },
-  postsContainer: {
-    flex: 1,
-    width: "100%",
-  },
-  postsTitle: {
-    fontSize: 20,
-    textAlign: "left",
-    marginTop: 8,
-    borderBottomColor: "#e0e0e0e8",
-    borderBottomWidth: 1,
-    paddingBottom: 10,
-  },
-
   formButton: {
     backgroundColor: "#E1F8D7",
     paddingVertical: 15,

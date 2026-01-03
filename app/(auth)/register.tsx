@@ -18,6 +18,11 @@ import {
   TextInput,
 } from "react-native";
 import { auth, db } from "../../utils/FirebaseConfig";
+import {
+  BACKGROUND_COLOR,
+  CALM_WHITE,
+  FULL_WHITE,
+} from "../../constants/colors";
 
 const userData = collection(db, "users");
 
@@ -169,13 +174,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: BACKGROUND_COLOR,
   },
   title: {
     fontSize: 32,
     fontWeight: "bold",
     marginBottom: 40,
-    color: "#333333",
+    color: CALM_WHITE,
   },
   link: {
     marginTop: 20,
@@ -184,31 +189,18 @@ const styles = StyleSheet.create({
     color: "#007AFF",
   },
 
-  authContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-    backgroundColor: "#FFFFFF",
-  },
-  authTitle: {
-    fontSize: 32,
-    fontWeight: "bold",
-    marginBottom: 40,
-    color: "#333333",
-  },
   authInput: {
     width: "90%",
     height: 50,
-    borderColor: "#DDDDDD",
+    borderColor: FULL_WHITE,
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 15,
     marginBottom: 15,
-    backgroundColor: "#F9F9F9",
+    backgroundColor: FULL_WHITE,
   },
   authButton: {
-    backgroundColor: "#E1F8D7",
+    backgroundColor: FULL_WHITE,
     paddingVertical: 15,
     borderRadius: 8,
     width: "90%",

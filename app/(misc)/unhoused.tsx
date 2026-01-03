@@ -27,6 +27,13 @@ import {
 } from "../../services/generalService";
 import CollectiveView from "../../components/collective/CollectiveView";
 import { signOut } from "@firebase/auth";
+import {
+  BACKGROUND_COLOR,
+  CALM_WHITE,
+  FULL_WHITE,
+} from "../../constants/colors";
+import Header from "../../components/Header";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const dummyProfileData = {
   imageUrl:
@@ -178,32 +185,46 @@ const Unhoused = () => {
   */
 
   return (
-    <ScrollView
-      style={styles.container}
-      showsHorizontalScrollIndicator={false}
-      showsVerticalScrollIndicator={false}
-    >
-      <View style={styles.headerContainer}>
-        <Image
-          source={typeof imageUrl === "string" ? { uri: imageUrl } : imageUrl}
-          style={styles.image}
-        />
-        <Text style={styles.headerTextName}>{username}</Text>
-        <Text style={styles.headerText}>
-          {placed ? `Collective: ${collective}, Room: ${room}` : "No room set"}
-        </Text>
-      </View>
-      <View style={styles.middleContainer}>
-        <ProfileSettingCard setting="Phone number" settingInfo={phoneNumber} />
-        <ProfileSettingCard setting="Email" settingInfo={email} />
-        <ProfileSettingCard setting="Name" settingInfo={realname} />
-        <Button
-          text="Change settings"
-          path="./settings"
-          buttonStyle={styles.formButton}
-          buttonTextStyle={styles.formButtonText}
-        />
-        {/* 
+    <SafeAreaView style={styles.container}>
+      <Header />
+      <ScrollView
+        style={styles.scrollContainer}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        bounces={false}
+        overScrollMode="never"
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: 100,
+          paddingTop: 20,
+        }}
+      >
+        <View style={styles.headerContainer}>
+          <Image
+            source={typeof imageUrl === "string" ? { uri: imageUrl } : imageUrl}
+            style={styles.image}
+          />
+          <Text style={styles.headerTextName}>{username}</Text>
+          <Text style={styles.headerText}>
+            {placed
+              ? `Collective: ${collective}, Room: ${room}`
+              : "No room set"}
+          </Text>
+        </View>
+        <View style={styles.middleContainer}>
+          <ProfileSettingCard
+            setting="Phone number"
+            settingInfo={phoneNumber}
+          />
+          <ProfileSettingCard setting="Email" settingInfo={email} />
+          <ProfileSettingCard setting="Name" settingInfo={realname} />
+          <Button
+            text="Change settings"
+            path="./settings"
+            buttonStyle={styles.formButton}
+            buttonTextStyle={styles.formButtonText}
+          />
+          {/* 
         <Button
           text="FILL A2"
           onPress={onFillA2Press}
@@ -211,56 +232,59 @@ const Unhoused = () => {
           buttonTextStyle={styles.formButtonText}
         />
         */}
-        <Button
-          text="Approve me (TESTING ONLY)"
-          onPress={approveMe}
-          buttonStyle={styles.formButton}
-          buttonTextStyle={styles.formButtonText}
-        />
-        <Button
-          text="Log out"
-          onPress={handleLogout}
-          buttonStyle={styles.formButton}
-          buttonTextStyle={styles.formButtonText}
-        />
+          <Button
+            text="Approve me (TESTING ONLY)"
+            onPress={approveMe}
+            buttonStyle={styles.formButton}
+            buttonTextStyle={styles.formButtonText}
+          />
+          <Button
+            text="Log out"
+            onPress={handleLogout}
+            buttonStyle={styles.formButton}
+            buttonTextStyle={styles.formButtonText}
+          />
 
-        <CollectiveView onSelect={openJoin} />
-        <Modal visible={modalOpen} transparent animationType="fade">
-          <View style={styles.modalContainer}>
-            <View style={styles.modalInnerContainer}>
-              <Text style={styles.modalRoomText}>
-                Which room is yours in {selectedCollective}?
-              </Text>
+          <CollectiveView onSelect={openJoin} />
+          <Modal visible={modalOpen} transparent animationType="fade">
+            <View style={styles.modalContainer}>
+              <View style={styles.modalInnerContainer}>
+                <Text style={styles.modalRoomText}>
+                  Which room is yours in {selectedCollective}?
+                </Text>
 
-              <TextInput
-                value={roomText}
-                onChangeText={setRoomText}
-                placeholder="Room number, e.g., H0201"
-                style={styles.modalInput}
-              />
-              <View style={styles.modalButtonContainer}>
-                <Pressable onPress={closeJoin} style={styles.modalButton}>
-                  <Text style={styles.modalButtonText}>Lukk</Text>
-                </Pressable>
-                <Pressable onPress={handleJoin} style={styles.modalButton}>
-                  <Text style={styles.modalButtonText}>Apply to join</Text>
-                </Pressable>
+                <TextInput
+                  value={roomText}
+                  onChangeText={setRoomText}
+                  placeholder="Room number, e.g., H0201"
+                  style={styles.modalInput}
+                />
+                <View style={styles.modalButtonContainer}>
+                  <Pressable onPress={closeJoin} style={styles.modalButton}>
+                    <Text style={styles.modalButtonText}>Close</Text>
+                  </Pressable>
+                  <Pressable onPress={handleJoin} style={styles.modalButton}>
+                    <Text style={styles.modalButtonText}>Apply to join</Text>
+                  </Pressable>
+                </View>
               </View>
             </View>
-          </View>
-        </Modal>
-      </View>
-    </ScrollView>
+          </Modal>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: 30,
-    paddingTop: 20,
-    width: "90%",
-    alignSelf: "center",
-    marginVertical: 100,
+    backgroundColor: BACKGROUND_COLOR,
+  },
+  scrollContainer: {
+    flex: 1,
+    paddingHorizontal: "5%",
+    width: "100%",
+    backgroundColor: BACKGROUND_COLOR,
   },
   headerContainer: {
     alignItems: "center",
@@ -271,7 +295,7 @@ const styles = StyleSheet.create({
     height: 150,
     borderWidth: 4,
     borderRadius: 80,
-    borderColor: "#E1F8D7",
+    borderColor: FULL_WHITE,
     alignSelf: "center",
   },
   headerTextName: {
@@ -280,12 +304,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 6,
     marginBottom: 30,
+    color: CALM_WHITE,
   },
   headerText: {
     fontSize: 16,
     textAlign: "center",
     marginTop: 8,
     marginBottom: 12,
+    color: CALM_WHITE,
   },
   middleContainer: {
     alignItems: "center",
@@ -293,21 +319,8 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingBottom: 20,
   },
-  postsContainer: {
-    flex: 1,
-    width: "100%",
-  },
-  postsTitle: {
-    fontSize: 20,
-    textAlign: "left",
-    marginTop: 8,
-    borderBottomColor: "#e0e0e0e8",
-    borderBottomWidth: 1,
-    paddingBottom: 10,
-  },
-
   formButton: {
-    backgroundColor: "#E1F8D7",
+    backgroundColor: FULL_WHITE,
     paddingVertical: 15,
     borderRadius: 8,
     width: "100%",

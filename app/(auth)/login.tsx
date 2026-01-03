@@ -12,6 +12,12 @@ import {
 } from "react-native";
 import { auth, db } from "../../utils/FirebaseConfig";
 import { getUserDataFromDatabase } from "../../services/userService";
+import {
+  BACKGROUND_COLOR,
+  CALM_WHITE,
+  FULL_BLACK,
+  FULL_WHITE,
+} from "../../constants/colors";
 
 export default function LoginScreen() {
   const userData = collection(db, "users");
@@ -37,7 +43,7 @@ export default function LoginScreen() {
       return getQuery.docs[0].get("email");
     }
 
-    throw new Error("Brukernavn finnes ikke");
+    throw new Error("Username was not found");
   };
 
   const signIn = async () => {
@@ -51,7 +57,7 @@ export default function LoginScreen() {
           const email = await getEmailFromUsername(username);
           loginName = email;
         } catch (error: any) {
-          alert("Brukernavnet ble ikke funnet: " + error.message);
+          alert("Username was not found: " + error.message);
           setIsLoading(false);
           return;
         }
@@ -73,7 +79,7 @@ export default function LoginScreen() {
       }
     } catch (error: any) {
       console.log(error);
-      alert("Innlogging feilet: " + error.message);
+      alert("Login failed: " + error.message);
     } finally {
       setIsLoading(false);
     }
@@ -85,7 +91,7 @@ export default function LoginScreen() {
 
       <TextInput
         style={styles.authInput}
-        placeholder="Brukernavn"
+        placeholder="Username"
         placeholderTextColor="#888888"
         value={username}
         onChangeText={setUsername}
@@ -93,7 +99,7 @@ export default function LoginScreen() {
       />
       <TextInput
         style={styles.authInput}
-        placeholder="Passord"
+        placeholder="Password"
         placeholderTextColor="#888888"
         value={password}
         onChangeText={setPassword}
@@ -108,12 +114,12 @@ export default function LoginScreen() {
         {isLoading ? (
           <ActivityIndicator color="#fff" />
         ) : (
-          <Text style={styles.authButtonText}>Logg inn</Text>
+          <Text style={styles.authButtonText}>Log in</Text>
         )}
       </Pressable>
 
       <Link href="/register" style={styles.link}>
-        <Text style={styles.linkText}>Ny bruker? Registrer deg</Text>
+        <Text style={styles.linkText}>New user? Click here to register</Text>
       </Link>
     </KeyboardAvoidingView>
   );
@@ -125,13 +131,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: BACKGROUND_COLOR,
   },
   title: {
     fontSize: 32,
     fontWeight: "bold",
     marginBottom: 40,
-    color: "#333333",
+    color: CALM_WHITE,
   },
   link: {
     marginTop: 20,
@@ -140,31 +146,18 @@ const styles = StyleSheet.create({
     color: "#007AFF",
   },
 
-  authContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-    backgroundColor: "#FFFFFF",
-  },
-  authTitle: {
-    fontSize: 32,
-    fontWeight: "bold",
-    marginBottom: 40,
-    color: "#333333",
-  },
   authInput: {
     width: "90%",
     height: 50,
-    borderColor: "#DDDDDD",
+    borderColor: FULL_WHITE,
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 15,
     marginBottom: 15,
-    backgroundColor: "#F9F9F9",
+    backgroundColor: FULL_WHITE,
   },
   authButton: {
-    backgroundColor: "#E1F8D7",
+    backgroundColor: FULL_WHITE,
     paddingVertical: 15,
     borderRadius: 8,
     width: "90%",
@@ -174,7 +167,7 @@ const styles = StyleSheet.create({
   authButtonText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#000000",
+    color: FULL_BLACK,
   },
   authLink: {
     marginTop: 20,
