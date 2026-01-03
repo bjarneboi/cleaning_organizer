@@ -23,9 +23,11 @@ export default function Header() {
     <>
       <StatusBar style="auto" />
       <View style={styles.container}>
-        <Text style={styles.title}>{userData?.username}</Text>
+        <Text style={styles.title}>Username: {userData?.username}</Text>
         <Text style={styles.title}>
-          {userData?.collective ? userData.collective + " - " : "Not housed"}
+          {userData?.collective
+            ? "You live in: " + userData.collective + " / "
+            : "Not housed"}
           {userData?.room ? userData.room : ""}
         </Text>
       </View>
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#000000ff",
   },
   title: {
-    fontSize: 22,
+    fontSize: 16,
     fontWeight: "bold",
     color: CALM_WHITE,
   },

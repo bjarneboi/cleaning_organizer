@@ -13,6 +13,7 @@ import Button from "../../components/Button";
 import { ProfileSettingCard } from "../../components/profile/ProfileSettingCard";
 import { getUserDataFromDatabase } from "../../services/userService";
 import { signOut } from "@firebase/auth";
+import { CALM_WHITE } from "../../constants/colors";
 
 const dummyProfileData = {
   imageUrl:
@@ -136,12 +137,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 6,
     marginBottom: 30,
+    color: CALM_WHITE,
   },
   headerText: {
     fontSize: 16,
     textAlign: "center",
     marginTop: 8,
     marginBottom: 12,
+    color: CALM_WHITE,
   },
   middleContainer: {
     alignItems: "center",

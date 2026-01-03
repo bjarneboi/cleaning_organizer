@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
+import { CALM_WHITE } from "../../constants/colors";
 
 interface ProfileSettingCardProps {
   setting: string;
@@ -34,7 +35,7 @@ export const ProfileSettingCard = ({
 const styles = StyleSheet.create({
   profileText: {
     fontSize: 16,
-    color: "#333",
+    color: CALM_WHITE,
   },
   profileSettingCardContainer: {
     width: "100%",

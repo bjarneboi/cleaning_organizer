@@ -5,6 +5,11 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SettingCard } from "../../components/settings/SettingCard";
 import { auth } from "../../utils/FirebaseConfig";
 import { useProfileSettings } from "../../hooks/useProfileSettings";
+import {
+  BACKGROUND_COLOR,
+  CALM_WHITE,
+  FULL_WHITE,
+} from "../../constants/colors";
 
 const Settings = () => {
   const {
@@ -84,7 +89,7 @@ const Settings = () => {
       </View>
       <View style={{ height: 20 }} />
       <Pressable style={styles.formButton} onPress={handleLogout}>
-        <Text style={styles.formButtonText}>Logg ut</Text>
+        <Text style={styles.formButtonText}>Log out</Text>
       </Pressable>
     </View>
   );
@@ -94,21 +99,23 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingBottom: 30,
     paddingTop: 20,
+    paddingHorizontal: "5%",
     gap: 10,
-    width: "90%",
+    width: "100%",
     alignSelf: "center",
+    backgroundColor: BACKGROUND_COLOR,
   },
   image: {
     width: 150,
     height: 150,
     borderWidth: 4,
     borderRadius: 80,
-    borderColor: "#E1F8D7",
+    borderColor: CALM_WHITE,
     alignSelf: "center",
   },
   pictureButton: {
     alignItems: "center",
-    backgroundColor: "#E1F8D7",
+    backgroundColor: FULL_WHITE,
     borderRadius: 8,
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -120,7 +127,7 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   formButton: {
-    backgroundColor: "#E1F8D7",
+    backgroundColor: FULL_WHITE,
     paddingVertical: 15,
     borderRadius: 8,
     width: "100%",

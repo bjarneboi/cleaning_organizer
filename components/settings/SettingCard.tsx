@@ -1,6 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import React from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { CALM_WHITE } from "../../constants/colors";
 
 interface SettingCardProps {
   setting: string;
@@ -20,9 +21,9 @@ export const SettingCard = ({
   onSavePress,
 }: SettingCardProps) => {
   return (
-    <View style={styles.formText}>
-      <View style={{ flexDirection: "row", flex: 1, marginRight: 10 }}>
-        <Text style={{ fontSize: 16, fontWeight: "bold" }}>{setting}: </Text>
+    <View style={styles.formContainer}>
+      <View style={styles.innerContainer}>
+        <Text style={styles.settingText}>{setting}: </Text>
 
         {isEditing ? (
           <TextInput
@@ -32,8 +33,8 @@ export const SettingCard = ({
             autoFocus={true}
           />
         ) : (
-          <Text style={{ fontSize: 16 }} numberOfLines={1} ellipsizeMode="tail">
-            {value ? value : "Mangler info"}
+          <Text style={styles.valueText} numberOfLines={1} ellipsizeMode="tail">
+            {value ? value : "Missing info"}
           </Text>
         )}
       </View>
@@ -42,20 +43,41 @@ export const SettingCard = ({
         style={styles.smallButton}
         onPress={isEditing ? onSavePress : onEditPress}
       >
-        <Feather name={isEditing ? "check" : "edit-3"} size={22} color="#000" />
+        <Feather
+          name={isEditing ? "check" : "edit-3"}
+          size={22}
+          color={CALM_WHITE}
+        />
       </Pressable>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  formText: {
+  formContainer: {
     width: "100%",
     fontSize: 15,
     flexDirection: "row",
     alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: "#e0e0e0e8",
+    borderBottomColor: CALM_WHITE,
+  },
+
+  innerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+  },
+
+  settingText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: CALM_WHITE,
+  },
+
+  valueText: {
+    fontSize: 16,
+    color: CALM_WHITE,
   },
 
   smallButton: {
