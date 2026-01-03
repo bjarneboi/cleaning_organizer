@@ -1,5 +1,5 @@
 import { Link, useRouter } from "expo-router";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import {
   collection,
   doc,
@@ -90,7 +90,9 @@ export default function RegisterScreen() {
       );
       if (userTemp.user) {
         await addUserFirestore(userTemp.user.uid, username, email, realname);
+        await signOut(auth);
         alert("Registration successful! You can now log in.");
+        router.replace("/(auth)/login");
       }
     } catch (error: any) {
       console.log(error);
