@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { getUserDataFromDatabase } from "../services/userService";
-import { BACKGROUND_COLOR } from "../constants/colors";
+import { BACKGROUND_COLOR, CALM_WHITE } from "../constants/colors";
 
 export default function Header() {
   const [userData, setUserData] = React.useState<any>(null);
@@ -40,14 +40,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
     paddingVertical: 5,
-    backgroundColor: BACKGROUND_COLOR,
     borderBottomWidth: 2,
     borderBottomColor: "#000000ff",
   },
   title: {
     fontSize: 22,
     fontWeight: "bold",
-    color: "#000000ff",
+    color: CALM_WHITE,
   },
   iconContainer: {
     flexDirection: "row",

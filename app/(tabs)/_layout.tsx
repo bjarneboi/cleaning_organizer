@@ -5,7 +5,12 @@ import { Platform, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../../components/Header";
 import { getUserDataFromDatabase } from "../../services/userService";
-import { BACKGROUND_COLOR, FULL_BLACK } from "../../constants/colors";
+import {
+  BACKGROUND_COLOR,
+  CALM_BLUE,
+  CALM_WHITE,
+  FULL_BLACK,
+} from "../../constants/colors";
 
 const _Layout = () => {
   return (
@@ -14,8 +19,8 @@ const _Layout = () => {
       <View style={{ flex: 1, backgroundColor: BACKGROUND_COLOR }}>
         <Tabs
           screenOptions={{
-            tabBarActiveTintColor: "#d5d7e4ff",
-            tabBarInactiveTintColor: FULL_BLACK,
+            tabBarActiveTintColor: CALM_BLUE,
+            tabBarInactiveTintColor: CALM_WHITE,
             headerShown: false,
             tabBarStyle:
               Platform.OS === "ios"

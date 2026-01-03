@@ -17,7 +17,7 @@ import {
   getTasksForCollectiveWeek,
   setTasksForCollective,
 } from "../../services/taskService";
-import { BACKGROUND_COLOR } from "../../constants/colors";
+import { BACKGROUND_COLOR, CALM_WHITE } from "../../constants/colors";
 
 const Home = () => {
   const listDummy = [
@@ -141,5 +141,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginVertical: 16,
+    color: CALM_WHITE,
   },
 });
